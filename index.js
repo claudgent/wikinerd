@@ -1,12 +1,11 @@
 'use strict'
 const Bot = require('./bot');
-const config = require('./config');
 const request = require('superagent');
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 8080;
-const CLIENT_ID = config.client_id;
-const CLIENT_SECRET = config.client_secret;
+const port = process.env.port || 8080;
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const wikiAPI = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles='
 const wikiURL = 'https://en.wikipedia.org/wiki/';
 
@@ -35,7 +34,7 @@ app.listen(port, () => {
 
 
 const bot = new Bot ({
-  botToken: config.token,
+  token: botToken,
   autoReconnect: true,
   autoMark: true
 });
