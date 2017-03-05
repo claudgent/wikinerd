@@ -17,27 +17,34 @@ app.get('/', (req, res) => {
 app.get('./bot', (req, res) => {
   let code = req.query.code;
   request.get(`https://slack.com/api/oauth.access?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&code=${code}&redirect_uri=${escape('https://wikinerd.herokuapp.com/')}`)
-  .end((err, res) => {
-    if (err) throw err;
+  .end((err, result) => {
+    if (err) {
+      console.log(error);
+      return res.send('An error occured! Please try again later.');
+    }
+    console.log(res.body);
     let botToken = res.body.bot.bot_access_token;
     console.log('Got the token:', botToken);
   });
-  res.send('received');
+  startWikinerd(result.body.bot.bot_access_token);
+  res.send('You have successfully install WikiNerd! You can now start using it in your Slack team, but make sure to invite the bot to your channel first with the /invite command!');
 });
 
 app.listen(port, () => {
   console.log('listening');
 });
+
 //----------------------------------------------------------------------------------------
 
 //---------BOT----------------------------------------------------------------------------
 
-
-const bot = new Bot ({
-  token: botToken,
-  autoReconnect: true,
-  autoMark: true
-});
+function startWikinerd(token) {
+  const bot = new Bot({
+    token: token,
+    autoReconnect: true,
+    autoMark: true
+  });
+}
 
 function getWikiSummary(term, cb) {
   // replace spaces with unicode
