@@ -3,10 +3,10 @@ const Bot = require('./bot');
 const request = require('superagent');
 const express = require('express');
 const app = express();
-const port = process.env.port || 8080;
+const port = process.env.PORT || 8000;
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const wikiAPI = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles='
+const wikiAPI = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=';
 const wikiURL = 'https://en.wikipedia.org/wiki/';
 
 //---------Server-------------------------------------------------------------------------
