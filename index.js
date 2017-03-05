@@ -64,9 +64,8 @@ function startWikinerd(token) {
     });
   }
 
-
   bot.respondTo('hello', (message, channel, user) => {
-    channel.send(`Hello to you too, ${user.name}!`)
+    bot.send(`Hello to you too, ${user.name}!`, channel)
   }, true);
 
   bot.respondTo('help', (message, channel) => {
