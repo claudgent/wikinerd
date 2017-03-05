@@ -24,11 +24,13 @@ app.get('./bot', (req, res) => {
       return res.send('An error occured! Please try again later.');
     }
     console.log(res.body);
+
     let botToken = result.body.bot.bot_access_token;
     console.log('Got the token:', botToken);
+
+    startWikinerd(result.body.bot.bot_access_token);
+    res.send('You have successfully install WikiNerd! You can now start using it in your Slack team, but make sure to invite the bot to your channel first with the /invite command!');
   });
-  startWikinerd(result.body.bot.bot_access_token);
-  res.send('You have successfully install WikiNerd! You can now start using it in your Slack team, but make sure to invite the bot to your channel first with the /invite command!');
 });
 
 app.listen(port, () => {
@@ -45,27 +47,27 @@ function startWikinerd(token) {
     autoReconnect: true,
     autoMark: true
   });
+
+  function getWikiSummary(term, cb) {
+    // replace spaces with unicode
+    let parameters = term.replace(/ /g, '%20');
+
+  // get wikipedia search query
+    request.get(wikiAPI + parameters).end((err, res) => {
+      if (err) {
+        cb(err);
+        return;
+      }
+      let url = wikiURL + parameters;
+      // parse data for easy access
+      cb(null, JSON.parse(res.text), url);
+    });
+  }
 }
 
 bot.respondTo('hello', (message, channel, user) => {
   channel.send(`Hello to you too, ${user.name}!`)
 }, true);
-
-function getWikiSummary(term, cb) {
-  // replace spaces with unicode
-  let parameters = term.replace(/ /g, '%20');
-
-// get wikipedia search query
-  request.get(wikiAPI + parameters).end((err, res) => {
-    if (err) {
-      cb(err);
-      return;
-    }
-    let url = wikiURL + parameters;
-    // parse data for easy access
-    cb(null, JSON.parse(res.text), url);
-  });
-}
 
 bot.respondTo('help', (message, channel) => {
   bot.send(`To use my Wikipedia functionality, type \`wiki\` followed by your search query`, channel);
