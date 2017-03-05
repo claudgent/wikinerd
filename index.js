@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
   res.redirect(`https://slack.com/oauth/authorize?client_id=${CLIENT_ID}&scope=bot&redirect_uri=${escape('https://wikinerd.herokuapp.com/bot')}`);
 });
 
-app.get('./bot', (req, res) => {
+app.get('/bot', (req, res) => {
   let code = req.query.code;
 
   request.get(`https://slack.com/api/oauth.access?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&code=${code}&redirect_uri=${escape('https://wikinerd.herokuapp.com/bot')}`)
