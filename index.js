@@ -16,6 +16,7 @@ app.get('/', (req, res) => {
 
 app.get('./bot', (req, res) => {
   let code = req.query.code;
+
   request.get(`https://slack.com/api/oauth.access?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&code=${code}&redirect_uri=${escape('https://wikinerd.herokuapp.com/')}`)
   .end((err, result) => {
     if (err) {
@@ -23,7 +24,7 @@ app.get('./bot', (req, res) => {
       return res.send('An error occured! Please try again later.');
     }
     console.log(res.body);
-    let botToken = res.body.bot.bot_access_token;
+    let botToken = result.body.bot.bot_access_token;
     console.log('Got the token:', botToken);
   });
   startWikinerd(result.body.bot.bot_access_token);
@@ -45,6 +46,10 @@ function startWikinerd(token) {
     autoMark: true
   });
 }
+
+bot.respondTo('hello', (message, channel, user) => {
+  channel.send(`Hello to you too, ${user.name}!`)
+}, true);
 
 function getWikiSummary(term, cb) {
   // replace spaces with unicode
