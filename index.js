@@ -11,12 +11,12 @@ const wikiURL = 'https://en.wikipedia.org/wiki/';
 
 //---------Server-------------------------------------------------------------------------
 app.get('/', (req, res) => {
-  res.redirect(`https://slack.com/oauth/authorize?client_id=${CLIENT_ID}&scope=bot&redirect_uri=${escape('http://YOUR_REDIRECT_URI/bot')}`);
+  res.redirect(`https://slack.com/oauth/authorize?client_id=${CLIENT_ID}&scope=bot&redirect_uri=${escape('https://wikinerd.herokuapp.com/')}`);
 });
 
 app.get('./bot', (req, res) => {
   let code = req.query.code;
-  request.get(`https://slack.com/api/oauth.access?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&code=${code}&redirect_uri=${escape('http://YOUR_REDIRECT_URI/bot')}`)
+  request.get(`https://slack.com/api/oauth.access?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&code=${code}&redirect_uri=${escape('https://wikinerd.herokuapp.com/')}`)
   .end((err, res) => {
     if (err) throw err;
     let botToken = res.body.bot.bot_access_token;
