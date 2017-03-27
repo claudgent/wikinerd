@@ -10,8 +10,10 @@ const wikiAPI = 'https://en.wikipedia.org/w/api.php?format=json&action=query&pro
 const wikiURL = 'https://en.wikipedia.org/wiki/';
 
 //---------Server-------------------------------------------------------------------------
+app.use(express.static(__dirname + '/public'));//for landing page
+
 app.get('/', (req, res) => {
-  res.redirect(`https://slack.com/oauth/authorize?client_id=${CLIENT_ID}&scope=bot&redirect_uri=${escape('https://wikinerd.herokuapp.com/bot')}`);
+  res.sendFile(__dirname + '/public');
 });
 
 app.get('/bot', (req, res) => {
